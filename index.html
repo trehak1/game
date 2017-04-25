@@ -1,0 +1,29 @@
+<html>
+<head>
+</head>
+<body>
+    <script src="game.js"></script>
+    <script>
+
+        window.onload = function() {
+            Game.canvas = document.getElementById('canvas');
+            Game.logArea = document.getElementById('logarea');
+            Game.document = document;
+            Game.start();
+        }
+        
+    </script>
+
+    <table>
+        <tr>
+            <td>
+                <canvas id="canvas" width="600px" height="600px" style="border: 1px solid black" />
+            </td>
+            <td style="vertical-align : top">
+                <textarea id="logarea" cols="60" rows="20"></textarea>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
