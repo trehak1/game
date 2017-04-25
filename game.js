@@ -31,11 +31,11 @@ Game.start = function() {
 }
 
 Game.onClick = function(event) {
-    Game.log('click');
+    Game.log('click ' + event.x + ', ' + event.y);
 }
 
 Game.onKeypress = function(event) {
-    Game.log('key pressed');
+    Game.log('key pressed ' + event.keyCode);
 }
 
 Game.run = (function() {
