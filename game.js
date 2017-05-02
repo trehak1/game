@@ -31,8 +31,8 @@ Game.start = function() {
 }
 
 Game.onClick = function(event) {
-    Game.log('click ' + event.x + ', ' + event.y);
-    Game.objects[0] = new Bomba(3000, event.x/20, event.y/20);
+    Game.log('click ' + event.offsetX + ', ' + event.offsetY);
+    Game.objects[0] = new Bomba(3000, event.offsetX/20, event.offsetY/20);
 }
 
 Game.onKeypress = function(event) {
