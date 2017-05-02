@@ -8,7 +8,8 @@ Game.objects = [];
 // vykresli kazdy herni objekt
 Game.draw = function() {
   for(var i = 0; i < Game.objects.length; i++) {
-      Game.objects[i].draw();
+      var obj = Game.objects[i];
+      Game.board.draw(obj.color, obj.x, obj.y);
   }
 }
 
@@ -31,8 +32,10 @@ Game.start = function() {
 }
 
 Game.onClick = function(event) {
-    Game.log('click ' + event.offsetX + ', ' + event.offsetY);
-    Game.objects[0] = new Bomba(3000, event.offsetX/20, event.offsetY/20);
+    var x = Game.board.prepoctiNaHerniSouradnice(event.offsetX);
+    var y = Game.board.prepoctiNaHerniSouradnice(event.offsetY);
+    Game.log('click ' + x + ', ' + y);
+    Game.objects[0] = new Bomba(3000, x, y);
 }
 
 Game.onKeypress = function(event) {

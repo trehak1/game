@@ -4,12 +4,15 @@
 <body>
     <script src="game.js"></script>
     <script src="bomba.js"></script>
+    <script src="board.js"></script>
     <script>
 
         window.onload = function() {
             Game.canvas = document.getElementById('canvas');
             Game.logArea = document.getElementById('logarea');
             Game.document = document;
+            Game.board = Board;
+            Game.board.canvas = Game.canvas;
             Game.start();
         }
         

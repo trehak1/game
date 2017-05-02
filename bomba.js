@@ -1,5 +1,6 @@
 function Bomba(detonacniInterval, x, y) {
     
+    this.color = "black";
     this.x = x;
     this.y = y;
     this.detonacniInterval = detonacniInterval;
@@ -18,11 +19,6 @@ function Bomba(detonacniInterval, x, y) {
         } else {
             Game.log('Neskodna bomba');
         }
-    }
-
-    this.draw = function() {
-        var ctx = Game.canvas.getContext("2d");
-        ctx.fillRect(this.x*20,this.y*20,20,20);
     }
 
 
