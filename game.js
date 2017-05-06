@@ -1,22 +1,33 @@
 var Game = { };
 
 Game.fps = 50;
+Game.running = false;
 
 // herni objekty
 Game.objects = [];
     
 // vykresli kazdy herni objekt
 Game.draw = function() {
-  for(var i = 0; i < Game.objects.length; i++) {
-      var obj = Game.objects[i];
-      Game.board.draw(obj.color, obj.x, obj.y);
+  if(!Game.running) {
+    return;
+  }
+  Game.board.cleanUp();
+  for(var key in Game.objects) {
+      var obj = Game.objects[key];
+      if(obj.drawable) {
+        var img = obj.image;
+        Game.board.drawImage(img, obj.x, obj.y);
+      }
   }
 }
 
 // proved update stavu hry
 Game.update = function() {
-  for(var i = 0; i < Game.objects.length; i++) {
-      Game.objects[i].update();
+  if(!Game.running) {
+    return;
+  }
+  for(var key in Game.objects) {
+      Game.objects[key].update();
   }
 }
 
@@ -26,59 +37,46 @@ Game.log = function(text) {
 }
 
 Game.start = function() {
-    Game.log('Hra spustena');
     Game.canvas.addEventListener("click", Game.onClick, true);
     Game.document.addEventListener("keypress", Game.onKeypress, true);
+    Board.canvas = canvas;
+    Game.board = Board;
+    Game.running = true;
+    Game.log('Hra spustena');
+}
+
+Game.togglePause = function() {
+    Game.running = !Game.running;
 }
 
 Game.onClick = function(event) {
-    var x = Game.board.prepoctiNaHerniSouradnice(event.offsetX);
-    var y = Game.board.prepoctiNaHerniSouradnice(event.offsetY);
-    Game.log('click ' + x + ', ' + y);
-    Game.objects[0] = new Bomba(3000, x, y);
+    var x = Board.prepoctiNaHerniSouradnice(event.offsetX);
+    var y = Board.prepoctiNaHerniSouradnice(event.offsetY);
+    var bomba = new Bomba(1000, x, y);
+    Game.addObject(bomba);
+}
+
+Game.removeObject = function(obj) {
+  delete Game.objects[obj.id];
+}
+
+Game.addObject = function(obj) {
+    obj.id = id();
+    Game.objects[obj.id] = obj;
 }
 
 Game.onKeypress = function(event) {
     Game.log('key pressed ' + event.keyCode);
 }
 
-Game.run = (function() {
-  var loops = 0, skipTicks = 1000 / Game.fps,
-      maxFrameSkip = 10,
-      nextGameTick = (new Date).getTime();
-  
-  return function() {
-    loops = 0;
-    
-    while ((new Date).getTime() > nextGameTick && loops < maxFrameSkip) {
-      Game.update();
-      nextGameTick += skipTicks;
-      loops++;
-    }
-    
-    Game.draw();
-  };
-})(); 
+function id() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-(function() {
-  var onEachFrame;
-  if (window.webkitRequestAnimationFrame) {
-    onEachFrame = function(cb) {
-      var _cb = function() { cb(); webkitRequestAnimationFrame(_cb); }
-      _cb();
-    };
-  } else if (window.mozRequestAnimationFrame) {
-    onEachFrame = function(cb) {
-      var _cb = function() { cb(); mozRequestAnimationFrame(_cb); }
-      _cb();
-    };
-  } else {
-    onEachFrame = function(cb) {
-      setInterval(cb, 1000 / 60);
-    }
-  }
-  
-  window.onEachFrame = onEachFrame;
-})();
+    for( var i=0; i < 8; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-window.onEachFrame(Game.run);
+    return text;
+}
+
+MainLoop.setUpdate(Game.update).setDraw(Game.draw).start();
