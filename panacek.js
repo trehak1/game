@@ -4,7 +4,7 @@ function Panacek(x, y) {
 }
 
 Panacek.prototype.update = function() {
-    
+
 }
 
 Panacek.prototype.image = new Image();

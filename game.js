@@ -42,6 +42,9 @@ Game.start = function() {
     Board.canvas = canvas;
     Game.board = Board;
     Game.running = true;
+    var panacek = new Panacek(0, 0);
+    Game.addObject(panacek);
+    Game.panacek = panacek;
     Game.log('Hra spustena');
 }
 
@@ -67,6 +70,20 @@ Game.addObject = function(obj) {
 
 Game.onKeypress = function(event) {
     Game.log('key pressed ' + event.keyCode);
+
+    if(event.keyCode == 119) {
+        Game.panacek.y = Game.panacek.y - 1;
+    }
+    if(event.keyCode == 97) {
+        Game.panacek.x = Game.panacek.x - 1;
+    }
+    if(event.keyCode == 115) {
+        Game.panacek.y = Game.panacek.y + 1;
+    }
+    if(event.keyCode == 100) {
+        Game.panacek.x = Game.panacek.x + 1;
+    }
+
 }
 
 function id() {
